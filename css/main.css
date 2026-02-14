@@ -129,3 +129,12 @@ body {
     display: flex;
     gap: 5px;
 }
+.card.overdue {
+    border-left: 4px solid #e74c3c;
+    background-color: #fff0f0;
+}
+
+.overdue-text {
+    color: #e74c3c;
+    font-weight: bold;
+}

@@ -1,7 +1,7 @@
 Vue.component('task-card', {
     props: ['title', 'description', 'deadline', 'createdAt'],
     template: `
-        <div class="card">
+        <div class="card" :class="{ overdue: isOverdue }">
             <h3>{{ title }}</h3>
             <p class="description">{{ description }}</p>
             <div class="card-meta">
@@ -11,7 +11,7 @@ Vue.component('task-card', {
                 </div>
                 <div class="meta-item">
                     <span>Дедлайн:</span>
-                    <span>{{ formattedDate(deadline) }}</span>
+                     <span :class="{ 'overdue-text': isOverdue }">{{ formattedDate(deadline) }}</span>
                 </div>
             </div>
         </div>
@@ -25,7 +25,15 @@ Vue.component('task-card', {
                 day: '2-digit'
             });
         }
-    }
+    },
+    computed: {
+        isOverdue() {
+            if (!this.deadline) return false;
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            return new Date(this.deadline) < today;
+        }
+    },
 });
 
 let app = new Vue({
