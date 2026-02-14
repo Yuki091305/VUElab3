@@ -15,6 +15,18 @@
             <div class="column planned-column">
                 <h2>Запланированные задачи</h2>
                 <div class="cards-container">
+                    <task-card 
+                        v-for="task in columns.planned" 
+                        :key="task.id"
+                        :title="task.title" 
+                        :description="task.description"
+                        :deadline="task.deadline"
+                        :created-at="task.createdAt"
+                        :can-move-forward="true"
+                        :can-move-back="false"
+                        column="planned"
+                        @move-forward="moveTaskForward(task.id)">
+                    </task-card>
                     <form @submit.prevent="addNewTask" class="card-form">
                     <div class="form-group">
                         <label>Заголовок:</label>
@@ -37,12 +49,17 @@
                 <h2>Задачи в работе</h2>
                 <div class="cards-container">
                     <task-card 
-                        v-for="task in columns.planned" 
+                        v-for="task in columns.inProgress" 
                         :key="task.id"
                         :title="task.title" 
                         :description="task.description"
                         :deadline="task.deadline"
-                        :created-at="task.createdAt">
+                        :created-at="task.createdAt"
+                        :can-move-forward="true"
+                        :can-move-back="true"
+                        column="inProgress"
+                        @move-forward="moveTaskForward(task.id)"
+                        @move-back="moveTaskBack(task.id)">
                     </task-card>
                 </div>
             </div>
@@ -50,13 +67,18 @@
             <div class="column testing-column">
                 <h2>Тестирование</h2>
                 <div class="cards-container">
-                   <task-card 
-                        v-for="task in columns.planned" 
+                    <task-card 
+                        v-for="task in columns.testing" 
                         :key="task.id"
                         :title="task.title" 
                         :description="task.description"
                         :deadline="task.deadline"
-                        :created-at="task.createdAt">
+                        :created-at="task.createdAt"
+                        :can-move-forward="true"
+                        :can-move-back="true"
+                        column="testing"
+                        @move-forward="moveTaskForward(task.id)"
+                        @move-back="moveTaskBack(task.id)">
                     </task-card>
                 </div>
             </div>
@@ -65,12 +87,16 @@
                 <h2>Выполненные задачи</h2>
                 <div class="cards-container">
                     <task-card 
-                        v-for="task in columns.planned" 
+                        v-for="task in columns.completed" 
                         :key="task.id"
                         :title="task.title" 
                         :description="task.description"
                         :deadline="task.deadline"
-                        :created-at="task.createdAt">
+                        :created-at="task.createdAt"
+                        :can-move-forward="false"
+                        :can-move-back="true"
+                        column="completed"
+                        @move-back="moveTaskBack(task.id)">
                     </task-card>
                 </div>
             </div>
