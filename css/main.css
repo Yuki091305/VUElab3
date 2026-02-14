@@ -1,0 +1,97 @@
+.columns {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.column {
+    flex: 1;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.cards-container {
+    margin-top: 10px;
+}
+
+.card {
+    background: #f9f9f9;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.progress {
+    margin-top: 8px;
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.first-column.locked {
+    background-color: #f0f0f0;
+    opacity: 0.7;
+}
+
+.first-column.locked .card-form {
+    pointer-events: none;
+}
+
+.progress-bar {
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #4CAF50;
+    transition: width 0.3s;
+}
+
+.first-column.locked {
+    background-color: #f8f8f8;
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.progress-bar {
+    height: 8px;
+    background: #e0e0e0;
+    border-radius: 4px;
+    margin-top: 8px;
+    overflow: hidden;
+}
+
+.error-message {
+    color: #e74c3c;
+    font-size: 0.9rem;
+    margin: 8px 0;
+}
+
+.cards-container {
+    margin-top: 15px;
+    min-height: 400px;
+}
+
+.completion-time {
+    margin-top: 10px;
+    padding: 8px;
+    background-color: #e8f5e9;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    color: #2e7d32;
+    text-align: center;
+}
