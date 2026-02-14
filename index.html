@@ -1,71 +1,43 @@
 <!doctype html>
 <html lang="ru">
 <head>
-   <meta charset="UTF-8">
-   <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-   <script defer src="js/vue.js"></script>
-   <script defer src="js/main.js"></script>
-   <link rel="stylesheet" href="css/main.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script defer src="js/vue.js"></script>
+    <script defer src="js/main.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+    <title>Task Manager</title>
 </head>
 <body>
     <div id="app">
         <div class="columns">
-            <div class="column first-column" :class="{ locked: isFirstColumnLocked }">
-                <h2>First Column</h2>
-                 <form @submit.prevent="addNewCard" class="card-form">
-                    <input v-model="newCard.title" placeholder="Title" required :disabled="isFirstColumnLocked">
-                    <div v-for="(item, index) in newCard.items" :key="index" class="item-row">
-                        <input v-model="newCard.items[index]" placeholder="Item" :disabled="isFirstColumnLocked">
-                        <button type="button" @click="removeItem(index)" class="remove-btn" :disabled="isFirstColumnLocked">-</button>
-                    </div>
-                    <button type="button" @click="addItem" class="add-btn" :disabled="isFirstColumnLocked">+ Add Item</button>
-                    <button type="submit" :disabled="isInvalidCard || isAddButtonDisabled || isFirstColumnLocked">Add Card</button>
-                    <div v-if="isInvalidCard" class="error-message">
-                        Card must have 3-5 items and a title
-                    </div>
-                </form>
+            <div class="column planned-column">
+                <h2>Запланированные задачи</h2>
                 <div class="cards-container">
-                    <note-card 
-                        v-for="card in columns.first" 
-                        :key="card.id" 
-                        :data-id="card.id"
-                        :title="card.title" 
-                        :items="card.items"
-                        :checked-items="card.checkedItems"
-                        :completed-at="card.completedAt"
-                        @item-checked="handleItemChecked(card.id, $event)">
-                    </note-card>
+                    <!-- Карточки будут здесь -->
                 </div>
             </div>
-            <div class="column second-column">
-                <h2>Second Column</h2>
-                    <div class="cards-container">
-                        <note-card 
-                            v-for="card in columns.second" 
-                            :key="card.id"
-                            :title="card.title" 
-                            :items="card.items"
-                            :checked-items="card.checkedItems"
-                            :completed-at="card.completedAt"
-                            @item-checked="handleItemChecked(card.id, $event)">
-                        </note-card>
-                    </div>
+            
+            <div class="column in-progress-column">
+                <h2>Задачи в работе</h2>
+                <div class="cards-container">
+                    <!-- Карточки будут здесь -->
+                </div>
             </div>
-            <div class="column third-column">
-                <h2>Third Column </h2>
-                    <div class="cards-container">
-                        <note-card 
-                            v-for="card in columns.third" 
-                            :key="card.id"
-                            :title="card.title" 
-                            :items="card.items"
-                            :checked-items="card.checkedItems"
-                            :completed-at="card.completedAt"
-                            @item-checked="handleItemChecked(card.id, $event)">
-                        </note-card>
-                    </div>
+            
+            <div class="column testing-column">
+                <h2>Тестирование</h2>
+                <div class="cards-container">
+                    <!-- Карточки будут здесь -->
+                </div>
+            </div>
+            
+            <div class="column completed-column">
+                <h2>Выполненные задачи</h2>
+                <div class="cards-container">
+                    <!-- Карточки будут здесь -->
+                </div>
             </div>
         </div>
     </div>

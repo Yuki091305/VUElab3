@@ -1,8 +1,19 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f2f5;
+    padding: 20px;
+}
+
 .columns {
     display: flex;
     gap: 20px;
     padding: 20px;
-    min-height: 100vh;
 }
 
 .column {
@@ -14,84 +25,46 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
+.column h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 1.3rem;
+}
+
 .cards-container {
-    margin-top: 10px;
+    min-height: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .card {
     background: #f9f9f9;
-    padding: 12px;
+    padding: 15px;
     border-radius: 6px;
+    border-left: 4px solid #9b59b6;
+}
+
+.card h3 {
     margin-bottom: 10px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    transition: transform 0.2s;
+    color: #2c3e50;
 }
 
-.card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.progress {
-    margin-top: 8px;
-    font-size: 0.8rem;
-    color: #666;
-}
-
-.first-column.locked {
-    background-color: #f0f0f0;
-    opacity: 0.7;
-}
-
-.first-column.locked .card-form {
-    pointer-events: none;
-}
-
-.progress-bar {
-    height: 8px;
-    background: #e0e0e0;
-    border-radius: 4px;
-    margin-top: 8px;
-    overflow: hidden;
-}
-
-.progress-fill {
-    height: 100%;
-    background: #4CAF50;
-    transition: width 0.3s;
-}
-
-.first-column.locked {
-    background-color: #f8f8f8;
-    opacity: 0.7;
-    pointer-events: none;
-}
-
-.progress-bar {
-    height: 8px;
-    background: #e0e0e0;
-    border-radius: 4px;
-    margin-top: 8px;
-    overflow: hidden;
-}
-
-.error-message {
-    color: #e74c3c;
+.description {
+    color: #7f8c8d;
+    margin-bottom: 15px;
     font-size: 0.9rem;
-    margin: 8px 0;
 }
 
-.cards-container {
-    margin-top: 15px;
-    min-height: 400px;
+.card-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #95a5a6;
 }
 
-.completion-time {
-    margin-top: 10px;
-    padding: 8px;
-    background-color: #e8f5e9;
-    border-radius: 4px;
-    font-size: 0.85rem;
-    color: #2e7d32;
-    text-align: center;
+.meta-item {
+    display: flex;
+    gap: 5px;
 }
