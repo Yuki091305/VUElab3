@@ -174,3 +174,36 @@ body {
 .btn-back:hover {
     background: #c0392b;
 }
+.planned-column.locked {
+    opacity: 0.6;
+    position: relative;
+}
+
+.planned-column.locked::after {
+    content: "Столбец заблокирован. Дождитесь освобождения";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    color: #e74c3c;
+    text-align: center;
+    white-space: pre-line;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    z-index: 10;
+    width: 80%;
+}
+
+.card-form.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.card-form.disabled input,
+.card-form.disabled textarea,
+.card-form.disabled button {
+    cursor: not-allowed;
+}

@@ -67,7 +67,7 @@ let app = new Vue({
     },
     methods: {
         addNewTask() {
-            if (this.isInvalidTask) return;
+            if (this.isInvalidTask || this.isPlannedColumnLocked) return;
             
             this.columns.planned.push({
                 id: Date.now(),
@@ -92,13 +92,14 @@ let app = new Vue({
                 ...this.columns.inProgress,
                 ...this.columns.testing,
                 ...this.columns.completed
-            ].find(task => task.id === id);
+            ].find(task => task.id === task.id);
         },
         moveTaskForward(taskId) {
             const task = this.findTask(taskId);
             if (!task) return;
             
             if (this.isInPlanned(task)) {
+                if (this.isPlannedColumnLocked) return;
                 this.moveTask(task, 'planned', 'inProgress');
             } else if (this.isInInProgress(task)) {
                 this.moveTask(task, 'inProgress', 'testing');
@@ -140,6 +141,10 @@ let app = new Vue({
             return !this.newTask.title || 
                    !this.newTask.description || 
                    !this.newTask.deadline;
+        },
+        isPlannedColumnLocked() {
+            
+            return this.columns.inProgress.length >= 5;
         }
     }
 });

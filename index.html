@@ -12,8 +12,23 @@
 <body>
     <div id="app">
         <div class="columns">
-            <div class="column planned-column">
+            <div class="column planned-column" :class="{ locked: isPlannedColumnLocked }">
                 <h2>Запланированные задачи</h2>
+                <form @submit.prevent="addNewTask" class="card-form" :class="{ disabled: isPlannedColumnLocked }">
+                    <div class="form-group">
+                        <label>Заголовок:</label>
+                        <input v-model="newTask.title" placeholder="Название задачи" required :disabled="isPlannedColumnLocked">
+                    </div>
+                    <div class="form-group">
+                        <label>Описание:</label>
+                        <textarea v-model="newTask.description" placeholder="Подробное описание" :disabled="isPlannedColumnLocked"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Дедлайн:</label>
+                        <input v-model="newTask.deadline" type="date" required :disabled="isPlannedColumnLocked">
+                    </div>
+                    <button type="submit" :disabled="isInvalidTask || isPlannedColumnLocked">Добавить задачу</button>
+                </form>
                 <div class="cards-container">
                     <task-card 
                         v-for="task in columns.planned" 
@@ -22,26 +37,11 @@
                         :description="task.description"
                         :deadline="task.deadline"
                         :created-at="task.createdAt"
-                        :can-move-forward="true"
+                        :can-move-forward="!isPlannedColumnLocked"
                         :can-move-back="false"
                         column="planned"
                         @move-forward="moveTaskForward(task.id)">
                     </task-card>
-                    <form @submit.prevent="addNewTask" class="card-form">
-                    <div class="form-group">
-                        <label>Заголовок:</label>
-                        <input v-model="newTask.title" placeholder="Название задачи" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Описание:</label>
-                        <textarea v-model="newTask.description" placeholder="Подробное описание"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label>Дедлайн:</label>
-                        <input v-model="newTask.deadline" type="date" required>
-                    </div>
-                    <button type="submit" :disabled="isInvalidTask">Добавить задачу</button>
-                </form>
                 </div>
             </div>
             
