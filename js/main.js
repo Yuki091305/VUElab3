@@ -1,5 +1,5 @@
 Vue.component('task-card', {
-    props: ['title', 'description', 'deadline', 'createdAt', 'canMoveForward', 'canMoveBack', 'canEdit', 'column'],
+    props: ['title', 'description', 'deadline', 'createdAt', 'canMoveForward', 'canMoveBack', 'canEdit', 'canDelete', 'column'],
     template: `
         <div class="card" :class="{ overdue: isOverdue, editing: isEditing }">
             <div v-if="isEditing" class="edit-mode">
@@ -48,6 +48,12 @@ Vue.component('task-card', {
                         @click="$emit('move-forward')"
                         class="btn-forward">
                         Вперёд
+                    </button>
+                    <button 
+                        v-if="canDelete"
+                        @click="$emit('delete-task')"
+                        class="btn-delete">
+                        Удалить
                     </button>
                 </div>
             </div>
@@ -148,6 +154,12 @@ let app = new Vue({
                 Object.assign(task, updatedData);
             }
         },
+        deleteTask(taskId) {
+            this.columns.planned = this.columns.planned.filter(t => t.id !== taskId);
+            this.columns.inProgress = this.columns.inProgress.filter(t => t.id !== taskId);
+            this.columns.testing = this.columns.testing.filter(t => t.id !== taskId);
+            this.columns.completed = this.columns.completed.filter(t => t.id !== taskId);
+        },
         moveTaskForward(taskId) {
             const task = this.findTask(taskId);
             if (!task) return;
@@ -198,6 +210,28 @@ let app = new Vue({
         },
         isPlannedColumnLocked() {
             return this.columns.inProgress.length >= 5;
+        }
+    },
+    watch: {
+        columns: {
+            deep: true,
+            handler(newVal) {
+                localStorage.setItem('taskData', JSON.stringify({
+                    columns: newVal,
+                    timestamp: new Date().toISOString()
+                }));
+            }
+        }
+    },
+    mounted() {
+        const savedData = localStorage.getItem('taskData');
+        if (savedData) {
+            try {
+                const data = JSON.parse(savedData);
+                this.columns = data.columns;
+            } catch (e) {
+                console.error('Ошибка при загрузке данных:', e);
+            }
         }
     }
 });

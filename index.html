@@ -40,9 +40,11 @@
                         :can-move-forward="!isPlannedColumnLocked"
                         :can-move-back="false"
                         :can-edit="true"
+                        :can-delete="true"
                         column="planned"
                         @move-forward="moveTaskForward(task.id)"
-                        @update-task="updateTask(task.id, $event)">
+                        @update-task="updateTask(task.id, $event)"
+                        @delete-task="deleteTask(task.id)">
                     </task-card>
                 </div>
             </div>
@@ -60,10 +62,12 @@
                         :can-move-forward="true"
                         :can-move-back="true"
                         :can-edit="true"
+                        :can-delete="true"
                         column="inProgress"
                         @move-forward="moveTaskForward(task.id)"
                         @move-back="moveTaskBack(task.id)"
-                        @update-task="updateTask(task.id, $event)">
+                        @update-task="updateTask(task.id, $event)"
+                        @delete-task="deleteTask(task.id)">
                     </task-card>
                 </div>
             </div>
@@ -81,10 +85,12 @@
                         :can-move-forward="true"
                         :can-move-back="true"
                         :can-edit="true"
+                        :can-delete="true"
                         column="testing"
                         @move-forward="moveTaskForward(task.id)"
                         @move-back="moveTaskBack(task.id)"
-                        @update-task="updateTask(task.id, $event)">
+                        @update-task="updateTask(task.id, $event)"
+                        @delete-task="deleteTask(task.id)">
                     </task-card>
                 </div>
             </div>
@@ -93,17 +99,19 @@
                 <h2>Выполненные задачи</h2>
                 <div class="cards-container">
                     <task-card 
-                            v-for="task in columns.completed" 
-                            :key="task.id"
-                            :title="task.title" 
-                            :description="task.description"
-                            :deadline="task.deadline"
-                            :created-at="task.createdAt"
-                            :can-move-forward="false"
-                            :can-move-back="true"
-                            :can-edit="false"
-                            column="completed"
-                            @move-back="moveTaskBack(task.id)">
+                        v-for="task in columns.completed" 
+                        :key="task.id"
+                        :title="task.title" 
+                        :description="task.description"
+                        :deadline="task.deadline"
+                        :created-at="task.createdAt"
+                        :can-move-forward="false"
+                        :can-move-back="true"
+                        :can-edit="false"
+                        :can-delete="true"
+                        column="completed"
+                        @move-back="moveTaskBack(task.id)"
+                        @delete-task="deleteTask(task.id)">
                     </task-card>
                 </div>
             </div>
