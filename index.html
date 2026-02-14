@@ -15,28 +15,63 @@
             <div class="column planned-column">
                 <h2>Запланированные задачи</h2>
                 <div class="cards-container">
-                    <!-- Карточки будут здесь -->
+                    <form @submit.prevent="addNewTask" class="card-form">
+                    <div class="form-group">
+                        <label>Заголовок:</label>
+                        <input v-model="newTask.title" placeholder="Название задачи" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Описание:</label>
+                        <textarea v-model="newTask.description" placeholder="Подробное описание"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Дедлайн:</label>
+                        <input v-model="newTask.deadline" type="date" required>
+                    </div>
+                    <button type="submit" :disabled="isInvalidTask">Добавить задачу</button>
+                </form>
                 </div>
             </div>
             
             <div class="column in-progress-column">
                 <h2>Задачи в работе</h2>
                 <div class="cards-container">
-                    <!-- Карточки будут здесь -->
+                    <task-card 
+                        v-for="task in columns.planned" 
+                        :key="task.id"
+                        :title="task.title" 
+                        :description="task.description"
+                        :deadline="task.deadline"
+                        :created-at="task.createdAt">
+                    </task-card>
                 </div>
             </div>
             
             <div class="column testing-column">
                 <h2>Тестирование</h2>
                 <div class="cards-container">
-                    <!-- Карточки будут здесь -->
+                   <task-card 
+                        v-for="task in columns.planned" 
+                        :key="task.id"
+                        :title="task.title" 
+                        :description="task.description"
+                        :deadline="task.deadline"
+                        :created-at="task.createdAt">
+                    </task-card>
                 </div>
             </div>
             
             <div class="column completed-column">
                 <h2>Выполненные задачи</h2>
                 <div class="cards-container">
-                    <!-- Карточки будут здесь -->
+                    <task-card 
+                        v-for="task in columns.planned" 
+                        :key="task.id"
+                        :title="task.title" 
+                        :description="task.description"
+                        :deadline="task.deadline"
+                        :created-at="task.createdAt">
+                    </task-card>
                 </div>
             </div>
         </div>

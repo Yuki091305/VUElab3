@@ -31,11 +31,45 @@ Vue.component('task-card', {
 let app = new Vue({
     el: '#app',
     data: {
+        newTask: {
+            title: '',
+            description: '',
+            deadline: ''
+        },
         columns: {
             planned: [],
             inProgress: [],
             testing: [],
             completed: []
+        }
+    },
+    methods: {
+        addNewTask() {
+            if (this.isInvalidTask) return;
+            
+            this.columns.planned.push({
+                id: Date.now(),
+                title: this.newTask.title,
+                description: this.newTask.description,
+                deadline: this.newTask.deadline,
+                createdAt: new Date().toISOString()
+            });
+            
+            this.resetNewTask();
+        },
+        resetNewTask() {
+            this.newTask = {
+                title: '',
+                description: '',
+                deadline: ''
+            };
+        }
+    },
+    computed: {
+        isInvalidTask() {
+            return !this.newTask.title || 
+                   !this.newTask.description || 
+                   !this.newTask.deadline;
         }
     }
 });
