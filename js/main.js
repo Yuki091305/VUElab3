@@ -1,35 +1,66 @@
 Vue.component('task-card', {
-    props: ['title', 'description', 'deadline', 'createdAt', 'canMoveForward', 'canMoveBack', 'column'],
+    props: ['title', 'description', 'deadline', 'createdAt', 'canMoveForward', 'canMoveBack', 'canEdit', 'column'],
     template: `
-        <div class="card" :class="{ overdue: isOverdue }">
-            <h3>{{ title }}</h3>
-            <p class="description">{{ description }}</p>
-            <div class="card-meta">
-                <div class="meta-item">
-                    <span>Создано:</span>
-                    <span>{{ formattedDate(createdAt) }}</span>
+        <div class="card" :class="{ overdue: isOverdue, editing: isEditing }">
+            <div v-if="isEditing" class="edit-mode">
+                <div class="form-group">
+                    <input v-model="editedTitle" placeholder="Название задачи" required>
                 </div>
-                <div class="meta-item">
-                    <span>Дедлайн:</span>
-                    <span :class="{ 'overdue-text': isOverdue }">{{ formattedDate(deadline) }}</span>
+                <div class="form-group">
+                    <textarea v-model="editedDescription" placeholder="Описание"></textarea>
+                </div>
+                <div class="form-group">
+                    <input v-model="editedDeadline" type="date" required>
+                </div>
+                <div class="edit-actions">
+                    <button @click="saveEdit" class="btn-save">Сохранить</button>
+                    <button @click="cancelEdit" class="btn-cancel">Отмена</button>
                 </div>
             </div>
-            <div class="card-actions">
-                <button 
-                    v-if="canMoveBack" 
-                    @click="$emit('move-back')"
-                    class="btn-back">
-                    Назад
-                </button>
-                <button 
-                    v-if="canMoveForward" 
-                    @click="$emit('move-forward')"
-                    class="btn-forward">
-                    Вперёд
-                </button>
+            <div v-else>
+                <h3>{{ title }}</h3>
+                <p class="description">{{ description }}</p>
+                <div class="card-meta">
+                    <div class="meta-item">
+                        <span>Создано:</span>
+                        <span>{{ formattedDate(createdAt) }}</span>
+                    </div>
+                    <div class="meta-item">
+                        <span>Дедлайн:</span>
+                        <span :class="{ 'overdue-text': isOverdue }">{{ formattedDate(deadline) }}</span>
+                    </div>
+                </div>
+                <div class="card-actions">
+                    <button 
+                        v-if="canEdit" 
+                        @click="startEdit"
+                        class="btn-edit">
+                        Редактировать
+                    </button>
+                    <button 
+                        v-if="canMoveBack" 
+                        @click="$emit('move-back')"
+                        class="btn-back">
+                        Назад
+                    </button>
+                    <button 
+                        v-if="canMoveForward" 
+                        @click="$emit('move-forward')"
+                        class="btn-forward">
+                        Вперёд
+                    </button>
+                </div>
             </div>
         </div>
     `,
+    data() {
+        return {
+            isEditing: false,
+            editedTitle: this.title,
+            editedDescription: this.description,
+            editedDeadline: this.deadline
+        };
+    },
     computed: {
         isOverdue() {
             if (!this.deadline) return false;
@@ -46,6 +77,23 @@ Vue.component('task-card', {
                 month: '2-digit',
                 day: '2-digit'
             });
+        },
+        startEdit() {
+            this.isEditing = true;
+            this.editedTitle = this.title;
+            this.editedDescription = this.description;
+            this.editedDeadline = this.deadline;
+        },
+        saveEdit() {
+            this.$emit('update-task', {
+                title: this.editedTitle,
+                description: this.editedDescription,
+                deadline: this.editedDeadline
+            });
+            this.isEditing = false;
+        },
+        cancelEdit() {
+            this.isEditing = false;
         }
     }
 });
@@ -92,7 +140,13 @@ let app = new Vue({
                 ...this.columns.inProgress,
                 ...this.columns.testing,
                 ...this.columns.completed
-            ].find(task => task.id === task.id);
+            ].find(task => task.id === id);
+        },
+        updateTask(taskId, updatedData) {
+            const task = this.findTask(taskId);
+            if (task) {
+                Object.assign(task, updatedData);
+            }
         },
         moveTaskForward(taskId) {
             const task = this.findTask(taskId);
@@ -143,7 +197,6 @@ let app = new Vue({
                    !this.newTask.deadline;
         },
         isPlannedColumnLocked() {
-            
             return this.columns.inProgress.length >= 5;
         }
     }
